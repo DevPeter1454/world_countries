@@ -34,8 +34,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
         width: double.infinity,
       )
     ];
-    var currency = widget.country.currencies as Map;
-    var languages = widget.country.officialLanguage as Map;
+    var currency = widget.country.currencies;
+    var languages = widget.country.officialLanguage;
     var timezones = widget.country.timezones as List;
 
     return Scaffold(
@@ -159,8 +159,12 @@ class _DetailsScreenState extends State<DetailsScreen> {
                           ),
                         ),
                         Text(
-                            widget.country.capital.toString().substring(1,
-                                widget.country.capital.toString().length - 1),
+                            widget.country.capital == null
+                                ? 'Not Found'
+                                : widget.country.capital.toString().substring(
+                                    1,
+                                    widget.country.capital.toString().length -
+                                        1),
                             style: const TextStyle(fontSize: 16)),
                       ]),
                     ),
@@ -191,7 +195,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Text(languages.values.first,
+                        Text(languages == null ? ' ' : languages.values.first,
                             style: const TextStyle(fontSize: 16)),
                       ]),
                     ),
@@ -205,7 +209,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Text(currency.values.first['name'],
+                        Text(
+                            currency == null
+                                ? ''
+                                : currency.values.first['name'],
                             style: const TextStyle(fontSize: 16)),
                       ]),
                     ),

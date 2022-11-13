@@ -3,7 +3,7 @@ import 'package:world_countries/view/DetailsScreen/detail_screen.dart';
 
 import 'models/country/country_model.dart';
 
-class onGenerateRoute {
+class OnGenerateRoute {
   static onGenerateRoutes(RouteSettings settings) {
     switch (settings.name) {
       case DetailsScreen.routeName:

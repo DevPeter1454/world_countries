@@ -18,7 +18,9 @@ class ApiServices {
       jsonResponse.forEach((element) {
         list.add(Country.fromMap(element));
       });
+
       return {'data': list, 'length': list.length};
+
       // var val = list[10].currencies as Map;
 
       // print(val.values.toList()[0]['name']);
@@ -37,8 +39,11 @@ class ApiServices {
       jsonResponse.forEach((element) {
         list.add(Country.fromMap(element));
       });
-     
-      return {'data': list, 'length': list.length};
+      if (list.isEmpty) {
+        EasyLoading.showError('No data found');
+      } else {
+        return {'data': list, 'length': list.length};
+      }
     } catch (e) {
       EasyLoading.showError('Something went wrong...');
     }
@@ -62,4 +67,33 @@ class ApiServices {
       EasyLoading.showError('Something went wrong...');
     }
   }
+
+    Future getCountriesByContinent(List continent) async {
+      try {
+        var list = [];
+
+        String url = 'https://restcountries.com/v3.1/all';
+        http.Response response = await http.get(Uri.parse(url));
+        var jsonResponse = json.decode(utf8.decode(response.bodyBytes));
+        // print(jsonResponse);
+
+        jsonResponse.forEach((element) {
+          list.add(Country.fromMap(element));
+        });
+
+        var continentList = [];
+        for (var i = 0; i < continent.length; i++) {
+          continentList.add(list
+              .where((element) => element.continent == continent[i])
+              .toList());
+        }
+        if (continentList.isEmpty) {
+          EasyLoading.showError('No data found');
+        } else {
+          return {'data': continentList, 'length': continentList.length};
+        }
+      } catch (e) {
+        EasyLoading.showError('Something went wrong...');
+      }
+    }
 }

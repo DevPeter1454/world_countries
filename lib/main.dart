@@ -24,16 +24,16 @@ class MyApp extends StatelessWidget {
         final themeProvider = Provider.of<ThemeProvider>(context);
 
         return MaterialApp(
-          title: 'Flutter Demo',
+          title: 'World Countries App',
           home: const HomeScreen(),
           themeMode: themeProvider.themeMode,
           theme: MyThemes.lightTheme,
           darkTheme: MyThemes.darkTheme,
           debugShowCheckedModeBanner: false,
           onGenerateRoute: (settings) =>
-              onGenerateRoute.onGenerateRoutes(settings),
+              OnGenerateRoute.onGenerateRoutes(settings),
           supportedLocales: L10n.all,
-          localizationsDelegates: [
+          localizationsDelegates: const[
             AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,

@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -11,6 +13,7 @@ import 'package:world_countries/view/HomeScreen/constants/changetheme.dart';
 import 'package:world_countries/view/HomeScreen/constants/tile.dart';
 
 import 'constants/checkbox_state.dart';
+import 'constants/global_variables.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -25,30 +28,12 @@ class _HomeScreenState extends State<HomeScreen> {
   ApiServices apiServices = ApiServices();
   bool isDone = false;
   List countries = [];
-  GoogleTranslator translator = GoogleTranslator();
-  String text = 'Hello';
   bool value = false;
   List<String> selected = [];
   bool isContinent = false;
   int countriesLength = 0;
 
-  var continentFilter = [
-    CheckBoxState(
-      title: 'Africa',
-    ),
-    CheckBoxState(
-      title: 'Americas',
-    ),
-    CheckBoxState(
-      title: 'Asia',
-    ),
-    CheckBoxState(
-      title: 'Europe',
-    ),
-    CheckBoxState(
-      title: 'Oceania',
-    ),
-  ];
+  var continentFilter = GlobalVariables().regionFilter;
 
   getAllCountries() async {
     apiServices.getAllCountries().then((value) {
@@ -161,14 +146,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     .getCountryByName(textEditingController.text)
                     .then((value) {
                   countries.clear();
+
+                  if (value == null) {
+                    EasyLoading.showError('No Country Found');
+                  }
                   if (value['data'] != null && value['data'].length > 0) {
-                    print(value['data']);
                     countries = value['data'];
 
                     countriesLength = value['length'];
                     countries.sort((a, b) => a.name.compareTo(b.name));
                     setState(() {});
-                  } 
+                  }
                   // if(value['data'] )
                 });
               },
@@ -274,7 +262,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   const Padding(
                                     padding: EdgeInsets.all(12.0),
                                     child: Text(
-                                      'Continent',
+                                      'Region',
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
@@ -425,10 +413,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                 arguments: countries[index]);
                           },
                           child: Tile(
-                              flagUrl: countries[index].flags ?? '',
-                              countryName: countries[index].name,
-                              countryCapital:
-                                  countries[index].capital.toString()));
+                            flagUrl: countries[index].flags ?? '',
+                            countryName: countries[index].name,
+                            countryCapital: countries[index].capital == null
+                                ? 'N/A'
+                                : countries[index].capital.toString(),
+                          ));
                     })),
           ),
         ],
