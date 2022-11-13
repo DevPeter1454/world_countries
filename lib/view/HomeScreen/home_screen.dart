@@ -1,18 +1,13 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
-import 'package:translator/translator.dart';
 import 'package:world_countries/provider/theme_provider.dart';
 import 'package:world_countries/repository/Api%20Country/apiservice.dart';
 import 'package:world_countries/view/DetailsScreen/detail_screen.dart';
 import 'package:world_countries/view/HomeScreen/constants/changetheme.dart';
 import 'package:world_countries/view/HomeScreen/constants/tile.dart';
-
-import 'constants/checkbox_state.dart';
 import 'constants/global_variables.dart';
 
 class HomeScreen extends StatefulWidget {
