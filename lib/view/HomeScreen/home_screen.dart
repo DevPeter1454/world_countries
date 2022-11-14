@@ -11,6 +11,7 @@ import 'package:world_countries/view/HomeScreen/constants/tile.dart';
 import 'constants/global_variables.dart';
 
 class HomeScreen extends StatefulWidget {
+  static const String routeName = '/homeScreen';
   const HomeScreen({super.key});
 
   @override
@@ -169,7 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ? land()
                             : port();
                       },
-                      icon: const Icon(Icons.refresh))
+                      icon: const Icon(Icons.rotate_90_degrees_ccw)),
                 ],
               )
             ],

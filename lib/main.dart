@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:world_countries/l10n/l10n.dart';
 import 'package:world_countries/provider/theme_provider.dart';
 import 'package:world_countries/router.dart';
+import 'package:world_countries/splash.dart';
 import 'package:world_countries/view/HomeScreen/home_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
 
         return MaterialApp(
           title: 'World Countries App',
-          home: const HomeScreen(),
+          home: const SplashScreen(),
           themeMode: themeProvider.themeMode,
           theme: MyThemes.lightTheme,
           darkTheme: MyThemes.darkTheme,

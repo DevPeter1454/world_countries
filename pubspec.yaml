@@ -41,6 +41,7 @@ dependencies:
   translator: ^0.1.7
   modal_bottom_sheet: ^2.1.2
   flutter_easyloading: ^3.0.5
+  flutter_launcher_icons: ^0.10.0
 
 dev_dependencies:
   flutter_test:
@@ -83,10 +84,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+    - family: Axiforma
+      fonts:
+        - asset: fonts/Axiforma-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
