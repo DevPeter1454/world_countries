@@ -18,4 +18,27 @@ class GlobalVariables {
       title: 'Oceania',
     ),
   ];
+
+  List continentFilter = [
+     CheckBoxState(
+      title: 'Africa',
+    ), CheckBoxState(
+      title: 'Antarctica',
+    ),
+    CheckBoxState(
+      title: 'Asia',
+    ),
+    CheckBoxState(
+      title: 'Australia',
+    ),
+    CheckBoxState(
+      title: 'Europe',
+    ),
+    CheckBoxState(
+      title: 'North America',
+    ),
+    CheckBoxState(
+      title: 'South America',
+    ),
+  ];
 }

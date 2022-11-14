@@ -21,14 +21,15 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController textEditingController = TextEditingController();
   ScrollController scrollController = ScrollController();
   ApiServices apiServices = ApiServices();
+  GlobalVariables globalVariables = GlobalVariables();
   bool isDone = false;
   List countries = [];
   bool value = false;
-  List<String> selected = [];
+  List<String> selectedRegion = [];
+  List<String> selectedContinent = [];
+  bool isRegion = false;
   bool isContinent = false;
   int countriesLength = 0;
-
-  var continentFilter = GlobalVariables().regionFilter;
 
   getAllCountries() async {
     apiServices.getAllCountries().then((value) {
@@ -47,6 +48,46 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {});
     });
   }
+
+  // getCountriesByContinent(List continent) async {
+  //   if (selectedContinent.isNotEmpty && selectedRegion.isEmpty) {
+  //     var continentList = [];
+  //     countries.forEach((element) {
+  //       for (var i = 0; i < continent.length; i++) {
+  //         if (element.continent == continent[i]) {
+  //           continentList.add(element);
+  //         }
+  //       }
+  //     });
+  //     countries = continentList;
+  //     countriesLength = continentList.length;
+  //     countries.sort((a, b) => a.name.compareTo(b.name));
+  //     setState(() {});
+  //   }
+  //   if (selectedRegion.isNotEmpty && selectedContinent.isNotEmpty) {
+  //     apiServices.getCountryByRegion(selectedRegion).then((value) {
+  //       countries = value['data'];
+  //       countriesLength = value['length'];
+  //       var continentList = [];
+  //       countries.forEach((element) {
+  //         for (var i = 0; i < continent.length; i++) {
+  //           if (element.continent == continent[i] &&
+  //               selectedRegion.contains(element.region)) {
+  //             continentList.add(element);
+  //           }
+  //         }
+  //       });
+  //       countries = continentList;
+  //       countries.sort((a, b) => a.name.compareTo(b.name));
+  //       setState(() {});
+  //       if (continentList.isEmpty) {
+  //         EasyLoading.showError('No data found');
+  //       } else {
+  //         EasyLoading.showSuccess('Data found');
+  //       }
+  //     });
+  //   }
+  // }
 
   port() {
     // print('port');
@@ -84,7 +125,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-    print(countriesLength);
+    var regionFilter = globalVariables.regionFilter;
+    var continentFilter = globalVariables.continentFilter;
     return Scaffold(
         body: SafeArea(
             child: Padding(
@@ -95,15 +137,24 @@ class _HomeScreenState extends State<HomeScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              themeProvider.themeMode == ThemeMode.dark
+              themeProvider.themeMode == ThemeMode.dark ||
+                      MediaQuery.of(context).platformBrightness ==
+                          Brightness.dark
                   ? Image.asset(
                       'assets/images/dark_logo-.png',
                       height: 25.5,
                     )
-                  : Image.asset(
-                      'assets/images/ex_logo.png',
-                      height: 25.5,
-                    ),
+                  : themeProvider.themeMode == ThemeMode.light ||
+                          MediaQuery.of(context).platformBrightness ==
+                              Brightness.light
+                      ? Image.asset(
+                          'assets/images/ex_logo.png',
+                          height: 25.5,
+                        )
+                      : Image.asset(
+                          'assets/images/ex_logo.png',
+                          height: 25.5,
+                        ),
               Row(
                 children: [
                   SizedBox(
@@ -157,7 +208,9 @@ class _HomeScreenState extends State<HomeScreen> {
               },
               decoration: InputDecoration(
                   filled: true,
-                  fillColor: themeProvider.themeMode == ThemeMode.dark
+                  fillColor: themeProvider.themeMode == ThemeMode.dark ||
+                          MediaQuery.of(context).platformBrightness ==
+                              Brightness.dark
                       ? const Color(0XFF1E2C41)
                       : const Color(0XFFF2F4F7),
                   hintText: 'Search Country',
@@ -181,7 +234,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 30,
                   width: 65,
                   decoration: BoxDecoration(
-                    color: themeProvider.themeMode == ThemeMode.dark
+                    color: themeProvider.themeMode == ThemeMode.dark ||
+                            MediaQuery.of(context).platformBrightness ==
+                                Brightness.dark
                         ? const Color(0XFF000F24)
                         : Colors.white,
                     borderRadius: BorderRadius.circular(4),
@@ -215,15 +270,21 @@ class _HomeScreenState extends State<HomeScreen> {
                         return StatefulBuilder(builder: ((context, setState) {
                           return Container(
                             decoration: BoxDecoration(
-                                color: themeProvider.themeMode == ThemeMode.dark
-                                    ? const Color(0XFF000F24)
-                                    : Colors.white,
+                                color:
+                                    themeProvider.themeMode == ThemeMode.dark ||
+                                            MediaQuery.of(context)
+                                                    .platformBrightness ==
+                                                Brightness.dark
+                                        ? const Color(0XFF000F24)
+                                        : Colors.white,
                                 borderRadius: const BorderRadius.only(
                                     topLeft: Radius.circular(30),
                                     topRight: Radius.circular(30))),
-                            height: isContinent
+                            height: isRegion || isContinent
                                 ? MediaQuery.of(context).size.height * 0.9
-                                : MediaQuery.of(context).size.height * 0.3,
+                                : isRegion && isContinent
+                                    ? MediaQuery.of(context).size.height * 1.5
+                                    : MediaQuery.of(context).size.height * 0.3,
                             child: ListView(children: [
                               Row(
                                 mainAxisAlignment:
@@ -242,8 +303,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   IconButton(
                                       onPressed: () {
                                         setState(() {
-                                          isContinent = false;
-                                          selected.clear();
+                                          isRegion = false;
+                                          selectedRegion.clear();
                                         });
                                         Navigator.pop(context);
                                       },
@@ -267,18 +328,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                   IconButton(
                                       onPressed: () {
                                         setState(() {
-                                          isContinent = !isContinent;
+                                          isRegion = !isRegion;
                                         });
                                       },
-                                      icon: isContinent
+                                      icon: isRegion
                                           ? const Icon(Icons.arrow_drop_up)
                                           : const Icon(Icons.arrow_drop_down))
                                 ],
                               ),
-                              if (isContinent)
+                              if (isRegion)
                                 Column(
                                   children: [
-                                    ...continentFilter
+                                    ...regionFilter
                                         .map((e) => CheckboxListTile(
                                               title: Text(e.title),
                                               value: e.value,
@@ -286,9 +347,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 setState(() {
                                                   e.value = value!;
                                                   if (e.value == true) {
-                                                    selected.add(e.title);
+                                                    selectedRegion.add(e.title);
                                                   } else {
-                                                    selected.remove(e.title);
+                                                    selectedRegion
+                                                        .remove(e.title);
                                                   }
                                                 });
                                               },
@@ -307,10 +369,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                               onPressed: () {
                                                 setState(() {
                                                   for (var element
-                                                      in continentFilter) {
+                                                      in regionFilter) {
                                                     element.value = false;
                                                   }
-                                                  selected.clear();
+                                                  selectedRegion.clear();
                                                 });
                                                 getAllCountries();
                                                 Navigator.pop(context);
@@ -327,9 +389,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                               )),
                                           ElevatedButton(
                                               onPressed: () {
-                                                if (selected.isNotEmpty) {
+                                                if (selectedRegion.isNotEmpty) {
                                                   getCountriesByRegion(
-                                                      selected);
+                                                      selectedRegion);
                                                   Navigator.pop(context);
                                                   EasyLoading.showSuccess(
                                                       'Filter Applied... Please Wait..');
@@ -349,6 +411,107 @@ class _HomeScreenState extends State<HomeScreen> {
                                 )
                               else
                                 const SizedBox.shrink(),
+                              // Row(
+                              //   mainAxisAlignment:
+                              //       MainAxisAlignment.spaceBetween,
+                              //   children: [
+                              //     const Padding(
+                              //       padding: EdgeInsets.all(12.0),
+                              //       child: Text(
+                              //         'Continent',
+                              //         style: TextStyle(
+                              //           fontSize: 16,
+                              //           fontWeight: FontWeight.bold,
+                              //         ),
+                              //       ),
+                              //     ),
+                              //     IconButton(
+                              //         onPressed: () {
+                              //           setState(() {
+                              //             // isRegion = !isRegion;
+                              //             isContinent = !isContinent;
+                              //           });
+                              //         },
+                              //         icon: isContinent
+                              //             ? const Icon(Icons.arrow_drop_up)
+                              //             : const Icon(Icons.arrow_drop_down))
+                              //   ],
+                              // ),
+                              // if (isContinent)
+                              //   Column(
+                              //     children: [
+                              //       ...continentFilter
+                              //           .map((e) => CheckboxListTile(
+                              //                 title: Text(e.title),
+                              //                 value: e.value,
+                              //                 onChanged: (bool? value) {
+                              //                   setState(() {
+                              //                     e.value = value!;
+                              //                     if (e.value == true) {
+                              //                       selectedContinent
+                              //                           .add(e.title);
+                              //                     } else {
+                              //                       selectedContinent
+                              //                           .remove(e.title);
+                              //                     }
+                              //                   });
+                              //                 },
+                              //               ))
+                              //           .toList(),
+                              //       const SizedBox(
+                              //         height: 10,
+                              //       ),
+                              //       Padding(
+                              //         padding: const EdgeInsets.all(8.0),
+                              //         child: Row(
+                              //           mainAxisAlignment:
+                              //               MainAxisAlignment.spaceBetween,
+                              //           children: [
+                              //             ElevatedButton(
+                              //                 onPressed: () {
+                              //                   setState(() {
+                              //                     for (var element
+                              //                         in continentFilter) {
+                              //                       element.value = false;
+                              //                     }
+                              //                     selectedContinent.clear();
+                              //                   });
+                              //                   getAllCountries();
+                              //                   Navigator.pop(context);
+                              //                   EasyLoading.showSuccess(
+                              //                       'Filter Reset');
+                              //                 },
+                              //                 style: ElevatedButton.styleFrom(
+                              //                     backgroundColor:
+                              //                         const Color(0XFFFFFFFF)),
+                              //                 child: const Text(
+                              //                   'Reset',
+                              //                   style: TextStyle(
+                              //                       color: Colors.black),
+                              //                 )),
+                              //             ElevatedButton(
+                              //                 onPressed: () {
+                              //                   if (selectedContinent
+                              //                       .isNotEmpty) {
+                              //                     getCountriesByContinent(
+                              //                         selectedContinent);
+                              //                     Navigator.pop(context);
+                              //                     EasyLoading.showSuccess(
+                              //                         'Filter Applied... Please Wait..');
+                              //                   } else {
+                              //                     EasyLoading.showError(
+                              //                         'Please Select Atleast One Region');
+                              //                   }
+                              //                 },
+                              //                 style: ElevatedButton.styleFrom(
+                              //                     backgroundColor:
+                              //                         Color(0XFFFF6C00)),
+                              //                 child: const Text('Show Result')),
+                              //           ],
+                              //         ),
+                              //       )
+                              //     ],
+                              //   )
                             ]),
                           );
                         }));
@@ -358,7 +521,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 30,
                   width: 65,
                   decoration: BoxDecoration(
-                    color: themeProvider.themeMode == ThemeMode.dark
+                    color: themeProvider.themeMode == ThemeMode.dark ||
+                            MediaQuery.of(context).platformBrightness ==
+                                Brightness.dark
                         ? const Color(0XFF000F24)
                         : Colors.white,
                     borderRadius: BorderRadius.circular(4),

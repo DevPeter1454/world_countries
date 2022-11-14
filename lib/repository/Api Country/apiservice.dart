@@ -68,32 +68,32 @@ class ApiServices {
     }
   }
 
-    // Future getCountriesByContinent(List continent) async {
-    //   try {
-    //     var list = [];
+    Future getCountriesByContinent(List continent) async {
+      try {
+        var list = [];
 
-    //     String url = 'https://restcountries.com/v3.1/all';
-    //     http.Response response = await http.get(Uri.parse(url));
-    //     var jsonResponse = json.decode(utf8.decode(response.bodyBytes));
-    //     // print(jsonResponse);
+        String url = 'https://restcountries.com/v3.1/all';
+        http.Response response = await http.get(Uri.parse(url));
+        var jsonResponse = json.decode(utf8.decode(response.bodyBytes));
+        // print(jsonResponse);
 
-    //     jsonResponse.forEach((element) {
-    //       list.add(Country.fromMap(element));
-    //     });
+        jsonResponse.forEach((element) {
+          list.add(Country.fromMap(element));
+        });
 
-    //     var continentList = [];
-    //     for (var i = 0; i < continent.length; i++) {
-    //       continentList.add(list
-    //           .where((element) => element.continent == continent[i])
-    //           .toList());
-    //     }
-    //     if (continentList.isEmpty) {
-    //       EasyLoading.showError('No data found');
-    //     } else {
-    //       return {'data': continentList, 'length': continentList.length};
-    //     }
-    //   } catch (e) {
-    //     EasyLoading.showError('Something went wrong...');
-    //   }
-    // }
+        var continentList = [];
+        for (var i = 0; i < continent.length; i++) {
+          continentList.add(list
+              .where((element) => element.continent == continent[i])
+              .toList());
+        }
+        if (continentList.isEmpty) {
+          EasyLoading.showError('No data found');
+        } else {
+          return {'data': continentList, 'length': continentList.length};
+        }
+      } catch (e) {
+        EasyLoading.showError('Something went wrong...');
+      }
+    }
 }
