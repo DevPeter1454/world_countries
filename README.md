@@ -23,7 +23,7 @@ Models were created for the api's response, also the logic
 was structured in a way that effectively takes care of internet connection
 and unforeseen errors. Also, Provider was used for effective state management
 
-#How the app works
+## How the app works
 You can input the name of a country and search for the country, also, you can filter all countries 
 by clicking on the filter button, select the regions and wait for the country list to be updated according 
 to the filter. The thememode is adaptive and you can change the theme to what suits you.
