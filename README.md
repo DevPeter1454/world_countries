@@ -51,4 +51,4 @@ Due to the time constraint, these features will be implemented in the next updat
 ## Link to APK File
 https://drive.google.com/file/d/1rUxr4tKLNoKkIAKwWzxhpurfYEh8UFW8/view?usp=sharing
 ## Link to Appetize
-https://appetize.io/app/m4c2x7zzainppwj277piy5aa7a?device=pixel4&osVersion=12.0&scale=75
+https://appetize.io/app/rcnqvo5aejmwwejn5ybutumtqa?device=pixel4&osVersion=12.0&scale=75
