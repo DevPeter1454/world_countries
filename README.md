@@ -23,7 +23,12 @@ Models were created for the api's response, also the logic
 was structured in a way that effectively takes care of internet connection
 and unforeseen errors. Also, Provider was used for effective state management
 
-
+#How the app works
+You can input the name of a country and search for the country, also, you can filter all countries 
+by clicking on the filter button, select the regions and wait for the country list to be updated according 
+to the filter. The thememode is adaptive and you can change the theme to what suits you.
+For now, you can click on the change orientation to change the device orientation but the next update will include adaptive 
+orientation.
 
 ## Packages/Libraries Used
 They include:
@@ -41,9 +46,9 @@ resolved in the next update.
 
 ## Features to be added later
 Due to the time constraint, these features will be implemented in the next update:
-- Search filtering by currency, time region
+- Search filtering by currency, time
 
 ## Link to APK File
-https://drive.google.com/file/d/1m9TUEvjLXAnRqHUXYXcNJBvbS9LDFmuo/view?usp=sharing
+https://drive.google.com/file/d/1rUxr4tKLNoKkIAKwWzxhpurfYEh8UFW8/view?usp=sharing
 ## Link to Appetize
-https://appetize.io/app/i5yxjtudrbhxztv4g3j53giyku?device=pixel4&osVersion=12.0&scale=75
+https://appetize.io/app/m4c2x7zzainppwj277piy5aa7a?device=pixel4&osVersion=12.0&scale=75
